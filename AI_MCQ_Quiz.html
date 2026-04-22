@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Exam — 70 MCQ Practice Test</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #0d0f14;
+  --surface: #161a23;
+  --card: #1e2230;
+  --border: #2a3045;
+  --accent: #6c63ff;
+  --accent2: #ff6584;
+  --gold: #ffd166;
+  --green: #06d6a0;
+  --red: #ef233c;
+  --text: #e8eaf0;
+  --muted: #8891a8;
+  --tag: #252d40;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  background: linear-gradient(135deg, #1a1040 0%, #0d1520 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 2rem 2.5rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: .07;
+}
+.header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, #fff 0%, #a09aff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header .sub {
+  color: var(--muted);
+  font-size: .9rem;
+  margin-top: .4rem;
+}
+.stats-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+.stat-pill {
+  background: var(--tag);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: .3rem .9rem;
+  font-family: 'DM Mono', monospace;
+  font-size: .8rem;
+  color: var(--muted);
+}
+.stat-pill span { color: var(--accent); font-weight: 500; }
+
+/* ── PROGRESS ── */
+.progress-bar-wrap {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: .75rem 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.prog-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .8rem;
+  color: var(--muted);
+  white-space: nowrap;
+  min-width: 80px;
+}
+.prog-track {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  border-radius: 3px;
+  transition: width .4s ease;
+  width: 0%;
+}
+.score-live {
+  font-family: 'DM Mono', monospace;
+  font-size: .8rem;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* ── TOPIC FILTER ── */
+.filter-bar {
+  padding: 1rem 2.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-label { font-size: .8rem; color: var(--muted); margin-right: .3rem; }
+.filter-btn {
+  background: var(--tag);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 6px;
+  padding: .3rem .75rem;
+  font-size: .78rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all .2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+/* ── QUIZ AREA ── */
+.quiz-area {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+}
+
+/* ── QUESTION CARD ── */
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: border-color .3s;
+}
+.q-card.correct { border-color: var(--green); }
+.q-card.incorrect { border-color: var(--red); }
+.q-card.unanswered { opacity: .6; }
+
+.q-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.2rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.q-num {
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem;
+  background: var(--tag);
+  color: var(--accent);
+  padding: .25rem .5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.q-topic {
+  font-size: .72rem;
+  background: var(--tag);
+  color: var(--muted);
+  padding: .2rem .6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.q-text {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text);
+  font-weight: 400;
+}
+
+/* ── OPTIONS ── */
+.q-options {
+  padding: .8rem 1.4rem 1.2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+@media (max-width: 600px) { .q-options { grid-template-columns: 1fr; } }
+
+.opt-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: .65rem 1rem;
+  text-align: left;
+  font-size: .88rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all .18s;
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+}
+.opt-letter {
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.opt-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(108, 99, 255, .1);
+}
+.opt-btn.selected {
+  border-color: var(--accent);
+  background: rgba(108, 99, 255, .15);
+}
+.opt-btn.correct-ans {
+  border-color: var(--green);
+  background: rgba(6, 214, 160, .12);
+  color: var(--green);
+}
+.opt-btn.wrong-ans {
+  border-color: var(--red);
+  background: rgba(239, 35, 60, .12);
+  color: var(--red);
+}
+.opt-btn:disabled { cursor: default; }
+
+/* ── EXPLANATION ── */
+.explanation {
+  border-top: 1px solid var(--border);
+  padding: .8rem 1.4rem;
+  font-size: .85rem;
+  color: var(--muted);
+  display: none;
+  line-height: 1.55;
+}
+.explanation.show { display: block; }
+.explanation strong { color: var(--gold); }
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0 1.5rem;
+}
+.section-divider .line { flex: 1; height: 1px; background: var(--border); }
+.section-tag {
+  font-family: 'Syne', sans-serif;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--tag);
+  border: 1px solid var(--border);
+  padding: .3rem .8rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ── RESULTS ── */
+.results-panel {
+  display: none;
+  background: linear-gradient(135deg, #1a1040 0%, #0d1a30 100%);
+  border: 1px solid var(--accent);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.results-panel.show { display: block; }
+.results-panel h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: .5rem;
+}
+.score-big {
+  font-family: 'DM Mono', monospace;
+  font-size: 4rem;
+  font-weight: 500;
+  color: var(--gold);
+  line-height: 1;
+  margin: 1rem 0;
+}
+.score-grade {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+}
+.topic-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: .75rem;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+.topic-row {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .8rem 1rem;
+}
+.topic-row .t-name { font-size: .8rem; color: var(--muted); margin-bottom: .4rem; }
+.topic-row .t-bar-wrap { background: var(--border); border-radius: 3px; height: 6px; margin-bottom: .3rem; }
+.topic-row .t-bar { height: 100%; border-radius: 3px; background: var(--accent); }
+.topic-row .t-score { font-family: 'DM Mono', monospace; font-size: .78rem; color: var(--text); }
+
+/* ── SUBMIT BTN ── */
+.submit-wrap {
+  text-align: center;
+  margin: 2rem 0;
+}
+.submit-btn {
+  background: linear-gradient(135deg, var(--accent), #9f7aea);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 1rem 3rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: .5px;
+  transition: all .2s;
+  box-shadow: 0 4px 20px rgba(108, 99, 255, .4);
+}
+.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,.5); }
+.submit-btn:disabled { opacity: .5; cursor: default; transform: none; }
+
+.reset-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 8px;
+  padding: .6rem 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  margin-top: .8rem;
+  font-size: .9rem;
+  transition: all .2s;
+}
+.reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>AI — 70 MCQ Practice Exam</h1>
+  <div class="sub">Based on Negnevitsky · All 11 syllabus topics · Instant feedback with explanations</div>
+  <div class="stats-row">
+    <div class="stat-pill">Questions: <span>70</span></div>
+    <div class="stat-pill">Topics: <span>11</span></div>
+    <div class="stat-pill">Each unit: <span>~6 questions</span></div>
+    <div class="stat-pill">Mode: <span>MCQ with explanation</span></div>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="prog-label" id="progLabel">0 / 70</div>
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="score-live" id="scoreLive">Score: 0</div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter by topic:</span>
+  <button class="filter-btn active" onclick="filterTopic('all', this)">All</button>
+  <button class="filter-btn" onclick="filterTopic('Intro to AI', this)">Intro to AI</button>
+  <button class="filter-btn" onclick="filterTopic('Knowledge Systems', this)">Knowledge Systems</button>
+  <button class="filter-btn" onclick="filterTopic('Rule-Based ES', this)">Rule-Based ES</button>
+  <button class="filter-btn" onclick="filterTopic('Uncertainty', this)">Uncertainty</button>
+  <button class="filter-btn" onclick="filterTopic('Frames', this)">Frames</button>
+  <button class="filter-btn" onclick="filterTopic('Fuzzy Logic', this)">Fuzzy Logic</button>
+  <button class="filter-btn" onclick="filterTopic('Neural Networks', this)">Neural Networks</button>
+  <button class="filter-btn" onclick="filterTopic('Evolutionary', this)">Evolutionary</button>
+  <button class="filter-btn" onclick="filterTopic('Hybrid Systems', this)">Hybrid Systems</button>
+  <button class="filter-btn" onclick="filterTopic('Knowledge Engg', this)">Knowledge Engg</button>
+</div>
+
+<div class="quiz-area" id="quizArea">
+  <div class="results-panel" id="resultsPanel">
+    <h2>🎓 Quiz Results</h2>
+    <div class="score-big" id="finalScore">--/70</div>
+    <div class="score-grade" id="finalGrade"></div>
+    <div class="topic-breakdown" id="topicBreakdown"></div>
+    <button class="reset-btn" onclick="resetQuiz()">↺ Retake Quiz</button>
+  </div>
+  <div id="questionsContainer"></div>
+  <div class="submit-wrap">
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit & See Results</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  // ── INTRO TO AI (Q1–Q7) ──────────────────────────────
+  { n:1, topic:"Intro to AI", q:"Who coined the term 'Artificial Intelligence' at the Dartmouth Workshop in 1956?", opts:["Alan Turing","John McCarthy","Marvin Minsky","Claude Shannon"], ans:1, exp:"John McCarthy organised the 1956 Dartmouth workshop and coined the term 'artificial intelligence'. He also invented LISP." },
+  { n:2, topic:"Intro to AI", q:"The Turing Test is also known as:", opts:["The Intelligence Game","The Imitation Game","The Simulation Test","The Behaviour Test"], ans:1, exp:"Alan Turing (1950) called it the 'imitation game'. A computer passes if it can fool a human interrogator as often as another human would." },
+  { n:3, topic:"Intro to AI", q:"What was the main reason AI research stagnated in the late 1960s–early 1970s?", opts:["Computers were too fast","Weak methods failed on real problems","Too many expert systems existed","Turing test was passed"], ans:1, exp:"Weak methods using general search with no domain knowledge failed to scale to real-world problems. This led to funding cuts — the first 'AI Winter'." },
+  { n:4, topic:"Intro to AI", q:"MYCIN is best described as:", opts:["A genetic algorithm","A neural network for medical imaging","A rule-based expert system for diagnosing blood infections","A fuzzy control system"], ans:2, exp:"MYCIN was a landmark backward-chaining rule-based expert system developed at Stanford for diagnosing infectious blood diseases." },
+  { n:5, topic:"Intro to AI", q:"According to Turing, what makes the imitation game a universal test?", opts:["It tests mathematical ability","It avoids bias by using text-only communication and allows any question","It uses a fixed question set","It requires voice recognition"], ans:1, exp:"Text-only communication removes appearance/voice bias, and the interrogator is free to ask anything, making the test objective and universal." },
+  { n:6, topic:"Intro to AI", q:"McCulloch and Pitts (1943) contributed which foundational idea to AI?", opts:["The Bayesian inference model","A binary neuron model equivalent to a Turing machine","Fuzzy set theory","The genetic algorithm"], ans:1, exp:"McCulloch and Pitts proposed a binary neuron model (on/off state) and proved it was equivalent to a Turing machine — the cornerstone of neural computing." },
+  { n:7, topic:"Intro to AI", q:"Which of these is NOT a characteristic of 'weak methods' in early AI?", opts:["General-purpose search","No domain-specific knowledge","Highly efficient on real problems","Based on formal logic"], ans:2, exp:"Weak methods were inherently inefficient on real problems because they lacked domain knowledge and relied on general (exhaustive) search techniques." },
+
+  // ── KNOWLEDGE SYSTEMS (Q8–Q13) ──────────────────────────────
+  { n:8, topic:"Knowledge Systems", q:"Which type of knowledge represents 'knowing how' to do something?", opts:["Declarative","Heuristic","Procedural","Semantic"], ans:2, exp:"Procedural knowledge is 'know-how' — methods and processes. Declarative knowledge is 'know-what' — facts and assertions." },
+  { n:9, topic:"Knowledge Systems", q:"Metaknowledge is best defined as:", opts:["Knowledge about uncertainty","Knowledge about knowledge","Knowledge extracted from data","Knowledge encoded in fuzzy rules"], ans:1, exp:"Metaknowledge is knowledge about the use and control of domain knowledge. In rule-based systems, metarules express metaknowledge." },
+  { n:10, topic:"Knowledge Systems", q:"An expert system differs from a conventional program mainly in that it:", opts:["Runs faster","Separates knowledge from its processing","Uses object-oriented programming","Requires no user input"], ans:1, exp:"The key difference is the separation of the knowledge base from the inference engine. This allows easy updates and reuse of the inference mechanism with different knowledge." },
+  { n:11, topic:"Knowledge Systems", q:"A heuristic is best described as:", opts:["A mathematically proven rule","A rule of thumb from practical experience","A mandatory legal constraint","A database trigger"], ans:1, exp:"Heuristics are rules of thumb derived from practical experience. They work well in most cases but do not guarantee a correct answer." },
+  { n:12, topic:"Knowledge Systems", q:"Which is NOT a fundamental characteristic of expert systems?", opts:["Explaining its reasoning","Handling incomplete/uncertain data","Performing faster than any human","Operating in a narrow domain"], ans:2, exp:"Expert systems are NOT necessarily faster than humans. Their value lies in availability, consistency, and the ability to preserve and distribute expertise — not raw speed." },
+  { n:13, topic:"Knowledge Systems", q:"The knowledge engineer in an expert system team is primarily responsible for:", opts:["Writing the final user interface","Providing domain expertise","Acquiring, representing and testing knowledge in the system","Managing the project budget"], ans:2, exp:"The knowledge engineer designs, builds and tests the system, capturing knowledge from domain experts and encoding it appropriately." },
+
+  // ── RULE-BASED EXPERT SYSTEMS (Q14–Q20) ──────────────────────────────
+  { n:14, topic:"Rule-Based ES", q:"In a rule-based expert system, the database contains:", opts:["IF-THEN production rules","Facts about the current situation","The inference strategy","The user interface code"], ans:1, exp:"The database (also called working memory) contains the set of facts about the current problem situation. Rules are in the knowledge base." },
+  { n:15, topic:"Rule-Based ES", q:"Forward chaining is best suited for which type of problem?", opts:["Diagnosis of a specific disease","Proving a given hypothesis","Analysis and interpretation of gathered data","Goal-specific search"], ans:2, exp:"Forward chaining is data-driven — it gathers known facts and derives whatever can be inferred. It's ideal for analysis/interpretation tasks like DENDRAL." },
+  { n:16, topic:"Rule-Based ES", q:"Which inference technique does MYCIN use?", opts:["Forward chaining","Backward chaining","Bidirectional chaining","Fuzzy chaining"], ans:1, exp:"MYCIN uses backward chaining. It sets up a diagnostic goal (e.g., 'infection is bacterial') and searches backward for evidence to prove it." },
+  { n:17, topic:"Rule-Based ES", q:"A conflict set in rule-based systems refers to:", opts:["Two rules with contradictory conclusions","Multiple rules whose IF parts all match current facts","Rules that contain uncertain data","The gap between knowledge base and database"], ans:1, exp:"A conflict set is formed when more than one rule can fire in a given cycle. The inference engine must choose which rule to execute — this process is conflict resolution." },
+  { n:18, topic:"Rule-Based ES", q:"Which conflict resolution strategy fires the rule that uses the most recently added fact?", opts:["Priority-based","Most specific rule","Recency-based","Metarule-based"], ans:2, exp:"Recency-based (or most recent data) strategy uses time tags and fires the rule whose conditions reference the most recently entered fact. Useful for real-time systems." },
+  { n:19, topic:"Rule-Based ES", q:"What is the 'most specific rule' conflict resolution strategy based on?", opts:["The rule with fewer conditions is preferred","The rule with the most matching conditions is preferred","The rule defined last in the knowledge base fires","Random selection among valid rules"], ans:1, exp:"The most specific rule strategy fires the rule with the longest (most conditions) matching antecedent — assuming it processes more information than a general rule." },
+  { n:20, topic:"Rule-Based ES", q:"Which of these is a disadvantage of rule-based expert systems?", opts:["Uniform rule structure","Separation of knowledge from processing","Inability to learn from experience automatically","Natural knowledge representation"], ans:2, exp:"Rule-based expert systems cannot learn — a human must manually revise, add, or delete rules. Unlike neural networks, they have no self-updating mechanism." },
+
+  // ── UNCERTAINTY (Q21–Q27) ──────────────────────────────
+  { n:21, topic:"Uncertainty", q:"In Bayesian reasoning, P(H|E) represents:", opts:["Prior probability of hypothesis H","Probability of evidence E occurring","Posterior probability of H given evidence E","Probability that evidence E is false"], ans:2, exp:"P(H|E) is the posterior probability — the updated belief in hypothesis H after observing evidence E. P(H) before seeing evidence is the prior." },
+  { n:22, topic:"Uncertainty", q:"What is the main practical limitation of the Bayesian method in expert systems?", opts:["It cannot handle multiple hypotheses","It requires too many prior and conditional probabilities from experts","It uses approximate reasoning","It cannot update with new evidence"], ans:1, exp:"Bayesian reasoning requires experts to supply a large number of prior and conditional probabilities, which is time-consuming and often practically impossible." },
+  { n:23, topic:"Uncertainty", q:"Certainty factors were developed for which expert system?", opts:["DENDRAL","PROSPECTOR","MYCIN","GPS"], ans:2, exp:"Certainty Factors (CFs) were developed for MYCIN as a simpler alternative to Bayesian reasoning, allowing experts to attach confidence values to rules." },
+  { n:24, topic:"Uncertainty", q:"The range of a certainty factor (CF) value is:", opts:["0 to 1","−1 to +1","0 to 100","-∞ to +∞"], ans:1, exp:"CF values range from −1 (definitely false) to +1 (definitely true). A CF of 0 means no information, and 0.8 means strong belief." },
+  { n:25, topic:"Uncertainty", q:"Which of the following is a source of uncertainty in expert systems?", opts:["Too much data","Imprecise language used by experts","Excessive computation time","Too many production rules"], ans:1, exp:"Imprecise natural language (words like 'often', 'rarely') is one of four main sources of uncertainty alongside weak implications, unknown data, and conflicting expert views." },
+  { n:26, topic:"Uncertainty", q:"In the Bayesian formula, P(H) is called the ___ probability:", opts:["Posterior","Conditional","Prior","Joint"], ans:2, exp:"P(H) is the prior probability — the expert's belief in hypothesis H before any evidence is observed. It is updated to posterior P(H|E) after evidence." },
+  { n:27, topic:"Uncertainty", q:"Which uncertainty method was used by the expert system PROSPECTOR?", opts:["Certainty factors","Bayesian reasoning","Fuzzy logic","Neural weights"], ans:1, exp:"PROSPECTOR, an expert system for mineral exploration, was the first to use Bayesian rules of evidence to compute and propagate probabilities throughout the system." },
+
+  // ── FRAMES (Q28–Q34) ──────────────────────────────
+  { n:28, topic:"Frames", q:"The concept of frames for knowledge representation was introduced by:", opts:["Alan Turing","John McCarthy","Marvin Minsky","Lotfi Zadeh"], ans:2, exp:"Marvin Minsky introduced frames in 1975 as 'data structures for representing stereotyped situations'. They form the basis of object-oriented knowledge engineering." },
+  { n:29, topic:"Frames", q:"A WHEN NEEDED method is executed when:", opts:["The slot value changes","The slot value is needed but currently unspecified","The user logs into the system","A new instance is created"], ans:1, exp:"WHEN NEEDED methods execute lazily — only when the system needs the value of an attribute but it hasn't been set. They provide default/computed fallback values." },
+  { n:30, topic:"Frames", q:"In frame-based systems, inheritance means:", opts:["Frames can reference other knowledge bases","All attributes of a class-frame are automatically assumed by its instances","Rules fire in a specific order","Slots must have unique names"], ans:1, exp:"Inheritance allows instances to automatically acquire all attributes and default values of their class-frame, reducing redundancy and reflecting real-world hierarchies." },
+  { n:31, topic:"Frames", q:"Which relationship does 'is-a' represent in frame systems?", opts:["Aggregation","Association","Generalisation","Specialisation"], ans:2, exp:"'Is-a' represents generalisation — a subclass is a type of its superclass. 'Part-of' represents aggregation. 'Owns' represents association." },
+  { n:32, topic:"Frames", q:"What is a facet in frame-based systems?", opts:["A type of production rule","Extended knowledge about an attribute, such as its default value or constraints","A demon attached to a slot","A method that controls inference order"], ans:1, exp:"Facets provide extended information about an attribute: value facets (default/initial values), prompt facets (how to ask the user), and inference facets (when to stop inference)." },
+  { n:33, topic:"Frames", q:"A demon in frame-based systems has which structure?", opts:["While-loop","IF-THEN structure triggered by an event","SELECT-CASE statement","A function call"], ans:1, exp:"Demons are IF-THEN statements that fire automatically when a triggering event occurs (like a slot value changing). Methods are more complex and procedural." },
+  { n:34, topic:"Frames", q:"Compared to rule-only systems, the main search advantage of frame-based systems is:", opts:["They require no inference engine","They search only within the relevant frame, avoiding irrelevant knowledge","They use forward chaining exclusively","Frames cannot conflict with each other"], ans:1, exp:"Frames group all knowledge about an object together. The inference engine searches only the relevant frame, not the entire knowledge base — making search much more efficient." },
+
+  // ── FUZZY LOGIC (Q35–Q42) ──────────────────────────────
+  { n:35, topic:"Fuzzy Logic", q:"Fuzzy set theory was introduced by:", opts:["Alan Turing in 1950","Lotfi Zadeh in 1965","Marvin Minsky in 1975","John McCarthy in 1958"], ans:1, exp:"Lotfi Zadeh published 'Fuzzy Sets' in 1965. The theory was initially ignored in the West but adopted enthusiastically in Japan, leading to many consumer products in the 1980s." },
+  { n:36, topic:"Fuzzy Logic", q:"The membership function of a fuzzy set maps elements to values in:", opts:["[0, ∞)","(−1, 1)","[0, 1]","{0, 1}"], ans:2, exp:"Fuzzy membership functions map elements to the interval [0,1], where 0 = definitely not a member, 1 = definitely a member, and values in between = partial membership." },
+  { n:37, topic:"Fuzzy Logic", q:"Applying the hedge 'very' to a fuzzy set (e.g., 'very tall') is mathematically equivalent to:", opts:["Adding 0.5 to the membership function","Squaring the membership function (μ²)","Taking the square root of the membership function","Inverting the membership function"], ans:1, exp:"'Very' performs concentration: μ_very_A(x) = [μ_A(x)]². This narrows the set by reducing partial memberships more than high memberships." },
+  { n:38, topic:"Fuzzy Logic", q:"Which fuzzy set operation is used for AND (intersection)?", opts:["Maximum of membership values","Sum of membership values","Minimum of membership values","Product of membership values"], ans:2, exp:"Fuzzy intersection (AND) uses the minimum operator: μ_A∩B(x) = min(μ_A(x), μ_B(x)). Fuzzy union (OR) uses maximum." },
+  { n:39, topic:"Fuzzy Logic", q:"The last step in the fuzzy inference process is:", opts:["Fuzzification","Rule evaluation","Aggregation","Defuzzification"], ans:3, exp:"The four steps are: (1) Fuzzification, (2) Rule evaluation, (3) Aggregation of rule outputs, (4) Defuzzification — converting the aggregate fuzzy set back to a crisp number." },
+  { n:40, topic:"Fuzzy Logic", q:"The centroid (Centre of Gravity) method is used in:", opts:["Rule evaluation","Fuzzification","Defuzzification","Aggregation"], ans:2, exp:"The centroid method is the most popular defuzzification technique. It finds the centre of gravity of the aggregated fuzzy output region to produce a single crisp value." },
+  { n:41, topic:"Fuzzy Logic", q:"The Sugeno fuzzy inference method differs from Mamdani mainly in:", opts:["It uses crisp input values","Its rule consequents are mathematical functions or constants, not fuzzy sets","It cannot handle multiple antecedents","It doesn't require fuzzification"], ans:1, exp:"Sugeno uses singletons (constants) or linear functions as rule consequents, making defuzzification a simple weighted average — much faster than Mamdani's centroid of 2D shape." },
+  { n:42, topic:"Fuzzy Logic", q:"A Fuzzy Associative Memory (FAM) is used to:", opts:["Store training data for neural networks","Represent fuzzy rules in matrix form for multiple input-output relationships","Extract rules from neural networks","Store membership function parameters"], ans:1, exp:"A FAM represents fuzzy rules in matrix (or cube) form. For a 2-input system, a 2D matrix shows output values at each combination of input linguistic values." },
+
+  // ── NEURAL NETWORKS (Q43–Q50) ──────────────────────────────
+  { n:43, topic:"Neural Networks", q:"The backpropagation algorithm adjusts weights by:", opts:["Random weight assignment","Propagating errors from output back through the network using gradient descent","Evolutionary selection of weights","Comparing rules in the knowledge base"], ans:1, exp:"Backpropagation computes the output, calculates the error (desired − actual), then propagates this error backward, adjusting weights proportionally using gradient descent." },
+  { n:44, topic:"Neural Networks", q:"A single-layer perceptron CANNOT solve which classic problem?", opts:["AND gate","OR gate","XOR gate","NOT gate"], ans:2, exp:"XOR is not linearly separable. A single-layer perceptron can only solve linearly separable problems. This limitation motivated the development of multi-layer networks." },
+  { n:45, topic:"Neural Networks", q:"In a Hopfield network, knowledge is stored as:", opts:["IF-THEN rules","Stable energy states (attractors)","Centroid membership functions","Fuzzy rule weights"], ans:1, exp:"Hopfield networks store patterns as stable energy minima (attractors). When given a noisy or partial pattern, the network converges to the nearest stored pattern — associative memory." },
+  { n:46, topic:"Neural Networks", q:"Self-organising maps (Kohonen networks) use what type of learning?", opts:["Supervised learning with labelled data","Reinforcement learning","Unsupervised competitive learning","Backpropagation with desired outputs"], ans:2, exp:"Kohonen SOMs use unsupervised competitive learning. Neurons compete; the winner (best-matching unit) and its neighbours are updated. No labels or desired outputs needed." },
+  { n:47, topic:"Neural Networks", q:"The learning rate α in neural network training controls:", opts:["The number of hidden layers","How large each weight update step is","The activation function slope","The number of training epochs"], ans:1, exp:"Learning rate α controls step size. Too large → overshooting, oscillation. Too small → very slow convergence. Typical values range from 0.01 to 0.5." },
+  { n:48, topic:"Neural Networks", q:"Which activation function is described as 'sign activation' in neural expert systems?", opts:["Sigmoid function","Step function (outputs +1 or −1)","ReLU","Linear function"], ans:1, exp:"The sign activation function returns +1 if the net input X ≥ 0, and −1 if X < 0. It's used in conjunction-layer neurons in neural expert systems for rule extraction." },
+  { n:49, topic:"Neural Networks", q:"A Bidirectional Associative Memory (BAM) associates:", opts:["One pattern with its nearest neighbour","Pairs of patterns in both directions","Fuzzy sets with crisp values","Rules with conclusions"], ans:1, exp:"BAM stores pairs of patterns (A, B) such that presenting A recalls B, and presenting B recalls A. It's a two-layer recurrent network with bidirectional associations." },
+  { n:50, topic:"Neural Networks", q:"In a multilayer neural network, the hidden layer(s) are responsible for:", opts:["Direct communication with the user","Extracting intermediate features and transformations","Storing the original training data","Selecting which rules fire"], ans:1, exp:"Hidden layers perform nonlinear transformations and extract intermediate features. Without them, the network can only represent linear mappings." },
+
+  // ── EVOLUTIONARY (Q51–Q58) ──────────────────────────────
+  { n:51, topic:"Evolutionary", q:"Genetic algorithms were primarily invented by:", opts:["John Koza","Ingo Rechenberg","John Holland","Lotfi Zadeh"], ans:2, exp:"John Holland developed genetic algorithms in the early 1970s at the University of Michigan, formalising the theory of schemata and the Schema Theorem." },
+  { n:52, topic:"Evolutionary", q:"In genetic algorithms, the roulette wheel selection gives each chromosome a chance proportional to:", opts:["Its length","Its fitness value relative to total population fitness","The order it was created","Random assignment"], ans:1, exp:"Roulette wheel selection assigns each chromosome a slice of the wheel proportional to its fitness ratio. Fitter chromosomes have larger slices and are more likely selected." },
+  { n:53, topic:"Evolutionary", q:"The crossover operator in GAs is primarily used to:", opts:["Introduce random diversity","Combine good partial solutions from two parent chromosomes","Select the fittest individual","Convert binary strings to real numbers"], ans:1, exp:"Crossover recombines genetic material from two parents at a random crossover point, creating offspring that potentially inherit good characteristics from both parents." },
+  { n:54, topic:"Evolutionary", q:"Why is mutation needed in genetic algorithms?", opts:["To speed up convergence","To prevent the algorithm from getting trapped in local optima","To copy the best chromosome","To calculate fitness values"], ans:1, exp:"Mutation introduces random changes, maintaining genetic diversity. Without it, all chromosomes in a population can become identical, making the GA unable to escape local optima." },
+  { n:55, topic:"Evolutionary", q:"In the Schema Theorem, schemata that grow exponentially are characterised by:", opts:["Long defining length and high order","Short defining length, low order, and above-average fitness","Long chromosomes and low mutation","High mutation rate and large population"], ans:1, exp:"Short defining length (bits not spread across the chromosome), low order (few fixed bits), and above-average fitness — these schemata survive crossover and mutation and multiply." },
+  { n:56, topic:"Evolutionary", q:"How does an evolution strategy differ from a genetic algorithm?", opts:["It uses crossover but not mutation","It uses only mutation (Gaussian), no crossover, on real-valued parameters","It uses binary encoding","It requires a fitness function that returns symbolic values"], ans:1, exp:"Evolution strategies (Rechenberg, Schwefel) use only normally distributed mutation on real-valued parameters. No binary encoding and no crossover operator." },
+  { n:57, topic:"Evolutionary", q:"Genetic programming evolves:", opts:["Bit-string chromosomes","Real-valued parameter vectors","Complete computer programs (e.g., LISP S-expressions)","Fuzzy rule sets"], ans:2, exp:"Genetic programming (Koza, 1990s) evolves entire computer programs represented as variable-length trees. Unlike GAs which evolve fixed-length bit strings representing solutions." },
+  { n:58, topic:"Evolutionary", q:"What is the typical crossover probability (pc) used in basic genetic algorithms?", opts:["0.001","0.1","0.7","0.99"], ans:2, exp:"A crossover probability of approximately 0.7 is typical and generally produces good results. Mutation probability is much lower, typically around 0.001." },
+
+  // ── HYBRID SYSTEMS (Q59–Q64) ──────────────────────────────
+  { n:59, topic:"Hybrid Systems", q:"Soft computing was initiated by:", opts:["John McCarthy","Marvin Minsky","Lotfi Zadeh","Alan Turing"], ans:2, exp:"Lotfi Zadeh established the Berkeley Initiative in Soft Computing in 1991, proposing that fuzzy logic, neural networks and evolutionary computation form a powerful synergistic framework." },
+  { n:60, topic:"Hybrid Systems", q:"A neural expert system combines:", opts:["Fuzzy logic and genetic algorithms","Neural networks and rule-based expert systems","Hopfield networks and Kohonen maps","Decision trees and Bayesian reasoning"], ans:1, exp:"A neural expert system uses a trained neural network as the knowledge base and adds a rule extraction unit to generate IF-THEN rules for explanation — combining learning with transparency." },
+  { n:61, topic:"Hybrid Systems", q:"Approximate reasoning in neural expert systems means:", opts:["Using Bayesian probability for every inference","The system can draw conclusions even with noisy or incomplete input data","Fuzzy rules replace all crisp rules","The system always asks for more data before concluding"], ans:1, exp:"Approximate reasoning is the neural network's ability to generalise — it doesn't need an exact match with training data. This overcomes a key limitation of traditional expert systems." },
+  { n:62, topic:"Hybrid Systems", q:"In a neuro-fuzzy system, what role do the parameters a and b of fuzzification neurons play?", opts:["They set the learning rate","They act like trainable synaptic weights — adjusting the membership function shape","They determine the number of rules","They control the defuzzification method"], ans:1, exp:"Parameters a (centre) and b (width) of triangular activation functions in Layer 2 are adjusted during training — they function exactly like weights in a standard neural network." },
+  { n:63, topic:"Hybrid Systems", q:"ANFIS stands for:", opts:["Adaptive Neuro-Fuzzy Inference System","Automated Neural Fuzzy Intelligence System","Advanced Neural-Feedback Inference Structure","Associative Neuro-Fuzzy Integrated System"], ans:0, exp:"ANFIS = Adaptive Neuro-Fuzzy Inference System. It combines a neuro-fuzzy architecture with the Sugeno model and uses hybrid learning (backprop + least squares)." },
+  { n:64, topic:"Hybrid Systems", q:"What advantage does a neuro-fuzzy system have over a plain neural network?", opts:["It trains faster","It uses more neurons","It provides human-interpretable fuzzy rules — explaining its reasoning","It doesn't require training data"], ans:2, exp:"Neuro-fuzzy systems are transparent: they learn like neural networks but represent knowledge as fuzzy IF-THEN rules that experts can read and validate — solving the 'black box' problem." },
+
+  // ── KNOWLEDGE ENGINEERING (Q65–Q70) ──────────────────────────────
+  { n:65, topic:"Knowledge Engg", q:"The biggest bottleneck in building expert systems is:", opts:["Choosing the programming language","Knowledge acquisition from domain experts","Designing the user interface","Writing the inference engine"], ans:1, exp:"Knowledge acquisition — extracting, structuring and encoding expert knowledge — is notoriously difficult, time-consuming and expensive. Experts struggle to articulate tacit knowledge." },
+  { n:66, topic:"Knowledge Engg", q:"For a problem involving scheduling and optimisation, which intelligent tool is most appropriate?", opts:["Rule-based expert system","Fuzzy expert system","Genetic algorithm","Hopfield network"], ans:2, exp:"Genetic algorithms excel at scheduling and optimisation problems with many constraints (like the power maintenance scheduling case study in the textbook)." },
+  { n:67, topic:"Uncertainty", q:"If a problem involves pattern recognition from large numerical datasets with no clear expert rules, which tool is most suitable?", opts:["Rule-based expert system","Fuzzy expert system","Neural network","Certainty factors"], ans:2, exp:"Neural networks are ideal when large amounts of numerical data exist but explicit rules do not. They discover patterns automatically through training without human-crafted rules." },
+  { n:68, topic:"Knowledge Engg", q:"Data mining is primarily concerned with:", opts:["Cleaning and storing databases","Extracting useful patterns and knowledge from large datasets","Writing SQL queries","Designing relational database schemas"], ans:1, exp:"Data mining (also called Knowledge Discovery in Databases) uses techniques like decision trees and neural networks to extract actionable patterns from large datasets automatically." },
+  { n:69, topic:"Knowledge Engg", q:"An expert system is validated primarily by:", opts:["Running benchmark algorithms","Comparing its performance with a human domain expert on test cases","Measuring how fast it executes","Counting the number of rules in its knowledge base"], ans:1, exp:"Expert system validation involves presenting the system with real test cases and comparing its conclusions with those of human experts — essentially a domain-specific Turing test." },
+  { n:70, topic:"Knowledge Engg", q:"Which combination of intelligent technologies is best when BOTH learning AND explanation are required?", opts:["Plain neural network","Rule-based expert system only","Hybrid system such as neuro-fuzzy or neural expert system","Genetic algorithm only"], ans:2, exp:"Hybrid systems combine the learning capability of neural networks with the explanation capability of rule-based or fuzzy systems, solving the weaknesses of either approach alone." },
+];
+
+// ── State ──────────────────────────────────────────
+let userAnswers = {};
+let submitted = false;
+let currentFilter = 'all';
+
+function renderQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+
+  const topics = [...new Set(questions.map(q => q.topic))];
+  let prevTopic = null;
+
+  questions.forEach((q, i) => {
+    if (currentFilter !== 'all' && q.topic !== currentFilter) return;
+
+    if (q.topic !== prevTopic) {
+      const div = document.createElement('div');
+      div.className = 'section-divider';
+      div.innerHTML = `<div class="line"></div><div class="section-tag">${q.topic}</div><div class="line"></div>`;
+      container.appendChild(div);
+      prevTopic = q.topic;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `qcard-${q.n}`;
+
+    const letters = ['A', 'B', 'C', 'D'];
+    const optsHtml = q.opts.map((o, oi) => `
+      <button class="opt-btn" id="opt-${q.n}-${oi}" onclick="selectAnswer(${q.n}, ${oi})">
+        <span class="opt-letter">${letters[oi]}.</span>
+        <span>${o}</span>
+      </button>`).join('');
+
+    card.innerHTML = `
+      <div class="q-top">
+        <span class="q-num">Q${q.n}</span>
+        <span class="q-topic">${q.topic}</span>
+        <span class="q-text">${q.q}</span>
+      </div>
+      <div class="q-options">${optsHtml}</div>
+      <div class="explanation" id="exp-${q.n}">
+        <strong>Explanation:</strong> ${q.exp}
+      </div>`;
+
+    container.appendChild(card);
+
+    // Restore state if already answered
+    if (userAnswers[q.n] !== undefined) {
+      applyAnswerStyle(q.n, userAnswers[q.n], submitted);
+    }
+  });
+}
+
+function selectAnswer(qn, optIdx) {
+  if (submitted) return;
+  const q = questions.find(x => x.n === qn);
+  userAnswers[qn] = optIdx;
+
+  // Clear previous selection
+  for (let i = 0; i < 4; i++) {
+    const btn = document.getElementById(`opt-${qn}-${i}`);
+    if (btn) { btn.classList.remove('selected', 'correct-ans', 'wrong-ans'); }
+  }
+  const sel = document.getElementById(`opt-${qn}-${optIdx}`);
+  if (sel) sel.classList.add('selected');
+
+  updateProgress();
+}
+
+function applyAnswerStyle(qn, chosen, showCorrect) {
+  const q = questions.find(x => x.n === qn);
+  for (let i = 0; i < 4; i++) {
+    const btn = document.getElementById(`opt-${qn}-${i}`);
+    if (!btn) continue;
+    btn.classList.remove('selected', 'correct-ans', 'wrong-ans');
+    btn.disabled = showCorrect;
+    if (showCorrect) {
+      if (i === q.ans) btn.classList.add('correct-ans');
+      else if (i === chosen && chosen !== q.ans) btn.classList.add('wrong-ans');
+    } else {
+      if (i === chosen) btn.classList.add('selected');
+    }
+  }
+  const card = document.getElementById(`qcard-${qn}`);
+  if (showCorrect && card) {
+    card.classList.remove('correct', 'incorrect');
+    card.classList.add(chosen === q.ans ? 'correct' : 'incorrect');
+  }
+  const exp = document.getElementById(`exp-${qn}`);
+  if (showCorrect && exp) exp.classList.add('show');
+}
+
+function updateProgress() {
+  const answered = Object.keys(userAnswers).length;
+  const pct = (answered / questions.length * 100).toFixed(0);
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progLabel').textContent = `${answered} / ${questions.length}`;
+
+  if (submitted) {
+    const score = questions.filter(q => userAnswers[q.n] === q.ans).length;
+    document.getElementById('scoreLive').textContent = `Score: ${score}`;
+  }
+}
+
+function submitQuiz() {
+  if (submitted) return;
+  submitted = true;
+
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').textContent = '✓ Submitted';
+
+  // Apply styles to all answered questions
+  questions.forEach(q => {
+    if (userAnswers[q.n] !== undefined) {
+      applyAnswerStyle(q.n, userAnswers[q.n], true);
+    }
+  });
+
+  // Score calculation
+  const score = questions.filter(q => userAnswers[q.n] === q.ans).length;
+  const pct = Math.round(score / questions.length * 100);
+
+  let grade = '';
+  if (pct >= 90) grade = '🏆 Excellent! You are exam-ready.';
+  else if (pct >= 75) grade = '✅ Good job! Review the wrong answers.';
+  else if (pct >= 60) grade = '📚 Fair — focus on weaker topics.';
+  else grade = '⚠️ Keep studying — revisit the notes!';
+
+  // Topic breakdown
+  const topics = [...new Set(questions.map(q => q.topic))];
+  const breakdown = topics.map(t => {
+    const tqs = questions.filter(q => q.topic === t);
+    const correct = tqs.filter(q => userAnswers[q.n] === q.ans).length;
+    return { name: t, correct, total: tqs.length };
+  });
+
+  document.getElementById('finalScore').textContent = `${score} / ${questions.length}`;
+  document.getElementById('finalGrade').textContent = `${pct}% — ${grade}`;
+
+  const bp = document.getElementById('topicBreakdown');
+  bp.innerHTML = breakdown.map(t => {
+    const p = Math.round(t.correct / t.total * 100);
+    const color = p >= 70 ? '#06d6a0' : p >= 50 ? '#ffd166' : '#ef233c';
+    return `<div class="topic-row">
+      <div class="t-name">${t.name}</div>
+      <div class="t-bar-wrap"><div class="t-bar" style="width:${p}%;background:${color}"></div></div>
+      <div class="t-score">${t.correct}/${t.total} (${p}%)</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+  updateProgress();
+}
+
+function resetQuiz() {
+  userAnswers = {};
+  submitted = false;
+  document.getElementById('resultsPanel').classList.remove('show');
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Submit & See Results';
+  document.getElementById('progFill').style.width = '0%';
+  document.getElementById('progLabel').textContent = '0 / 70';
+  document.getElementById('scoreLive').textContent = 'Score: 0';
+  renderQuestions();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function filterTopic(topic, btn) {
+  currentFilter = topic;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuestions();
+}
+
+// Init
+renderQuestions();
+</script>
+</body>
+</html>
