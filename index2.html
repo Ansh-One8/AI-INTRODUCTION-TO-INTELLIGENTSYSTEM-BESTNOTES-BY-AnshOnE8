@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artificial Intelligence — Complete Study Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --ink: #1a1208;
+    --paper: #fdf8f0;
+    --accent: #c0392b;
+    --accent2: #2980b9;
+    --gold: #b8860b;
+    --muted: #6b5e4f;
+    --rule: #d4c4a8;
+    --highlight: #fff9e6;
+    --code-bg: #1e1e2e;
+    --green: #1a6b3c;
+    --teal: #0d5c6e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  /* ── TOP BAR ── */
+  .masthead {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2rem 3rem 1.5rem;
+    border-bottom: 4px solid var(--accent);
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .masthead .subtitle {
+    font-size: 1rem;
+    color: #c8b99a;
+    margin-top: .5rem;
+    letter-spacing: .5px;
+  }
+  .masthead .meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    font-size: .85rem;
+    color: #a09080;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .meta span::before { content: "▸ "; color: var(--accent); }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--highlight);
+    border: 1px solid var(--rule);
+    border-left: 5px solid var(--gold);
+    padding: 1.5rem 2rem;
+    margin: 2rem 3rem;
+    border-radius: 2px;
+  }
+  .toc h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .toc ol {
+    columns: 2;
+    gap: 2rem;
+    padding-left: 1.2rem;
+  }
+  .toc li {
+    margin-bottom: .4rem;
+    font-size: .95rem;
+  }
+  .toc a {
+    color: var(--teal);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .toc a:hover { text-decoration: underline; color: var(--accent); }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 3rem 4rem;
+  }
+
+  /* ── UNITS ── */
+  .unit {
+    margin-bottom: 3.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  .unit-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: .75rem;
+    border-bottom: 3px double var(--ink);
+  }
+  .unit-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    background: var(--accent);
+    color: white;
+    padding: .25rem .6rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .unit-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  /* ── SECTIONS ── */
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--teal);
+    margin: 1.8rem 0 .7rem;
+    padding-left: .75rem;
+    border-left: 3px solid var(--teal);
+  }
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent2);
+    margin: 1.3rem 0 .5rem;
+    font-family: 'Source Serif 4', serif;
+  }
+  p { margin-bottom: .9rem; }
+
+  /* ── DEFINITION BOXES ── */
+  .def-box {
+    background: var(--highlight);
+    border: 1px solid #e0d0a0;
+    border-left: 4px solid var(--gold);
+    padding: .9rem 1.2rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .def-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: .3rem;
+  }
+  .def-box p { margin: 0; font-style: italic; }
+
+  /* ── RULE BOX ── */
+  .rule-box {
+    background: #f0f4ff;
+    border: 1px solid #c0d0f0;
+    border-left: 4px solid var(--accent2);
+    padding: .9rem 1.2rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .9rem;
+    line-height: 1.8;
+  }
+  .rule-box .rule-label {
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent2);
+    margin-bottom: .4rem;
+  }
+
+  /* ── KEY POINTS ── */
+  .keypoints {
+    background: #f0fff4;
+    border: 1px solid #a8e0c0;
+    border-left: 4px solid var(--green);
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .keypoints .kp-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--green);
+    font-weight: 500;
+    margin-bottom: .5rem;
+  }
+  .keypoints ul {
+    padding-left: 1.3rem;
+    margin: 0;
+  }
+  .keypoints li {
+    margin-bottom: .4rem;
+    font-size: .95rem;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .9rem;
+    margin: 1rem 0 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  }
+  .compare-table th {
+    background: var(--ink);
+    color: var(--paper);
+    padding: .6rem .8rem;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    letter-spacing: .5px;
+  }
+  .compare-table td {
+    padding: .55rem .8rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .compare-table tr:nth-child(even) td { background: #f9f4ea; }
+  .compare-table tr:hover td { background: #fff0e0; }
+
+  /* ── IMPORTANT BOX ── */
+  .important {
+    background: #fff0f0;
+    border: 1px solid #f0b0b0;
+    border-left: 4px solid var(--accent);
+    padding: .9rem 1.2rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .important strong { color: var(--accent); }
+
+  /* ── YOUTUBE SECTION ── */
+  .youtube-section {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.5rem 3rem;
+    margin: 3rem 0 0;
+  }
+  .youtube-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: #ff6b6b;
+    margin-bottom: .5rem;
+  }
+  .youtube-section .yt-intro {
+    color: #c8b99a;
+    margin-bottom: 1.5rem;
+    font-size: .95rem;
+  }
+  .yt-card {
+    background: #2a2a3a;
+    border-left: 4px solid #ff6b6b;
+    padding: .9rem 1.2rem;
+    margin-bottom: .8rem;
+    border-radius: 0 6px 6px 0;
+  }
+  .yt-card .topic {
+    font-weight: 600;
+    color: #ffd700;
+    font-size: 1rem;
+    margin-bottom: .2rem;
+  }
+  .yt-card .why {
+    color: #b0b0c8;
+    font-size: .88rem;
+  }
+  .yt-priority {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    padding: .1rem .4rem;
+    border-radius: 2px;
+    margin-left: .5rem;
+    vertical-align: middle;
+  }
+  .priority-high { background: #c0392b; color: white; }
+  .priority-med { background: #d68910; color: white; }
+  .priority-low { background: #1a5276; color: white; }
+
+  /* ── DIAGRAM HINT ── */
+  .diagram {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    padding: 1rem 1.4rem;
+    border-radius: 4px;
+    margin: .8rem 0;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  /* ── EXAM TIPS ── */
+  .exam-tip {
+    background: #fffbf0;
+    border: 1px dashed var(--gold);
+    padding: .8rem 1.2rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    font-size: .9rem;
+  }
+  .exam-tip::before {
+    content: "📝 EXAM TIP: ";
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    letter-spacing: .5px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .masthead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .unit { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <h1>Artificial Intelligence</h1>
+  <div class="subtitle">Complete Study Notes — A Guide to Intelligent Systems (Negnevitsky)</div>
+  <div class="meta">
+    <span>11 Topics Covered</span>
+    <span>Exam-Ready Notes</span>
+    <span>Based on Textbook PDF</span>
+    <span>YouTube Recommendations Included</span>
+  </div>
+</header>
+
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#unit1">Introduction to AI</a></li>
+    <li><a href="#unit2">Knowledge-Based Intelligent Systems</a></li>
+    <li><a href="#unit3">Rule-Based Expert Systems</a></li>
+    <li><a href="#unit4">Uncertainty Management</a></li>
+    <li><a href="#unit5">Frame-Based Systems</a></li>
+    <li><a href="#unit6">Fuzzy Logic & Fuzzy Expert Systems</a></li>
+    <li><a href="#unit7">Frame-Based Expert Systems (Deep Dive)</a></li>
+    <li><a href="#unit8">Artificial Neural Networks</a></li>
+    <li><a href="#unit9">Evolutionary Computing</a></li>
+    <li><a href="#unit10">Hybrid Intelligent Systems</a></li>
+    <li><a href="#unit11">Knowledge Engineering</a></li>
+  </ol>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 1 -->
+<section class="unit" id="unit1">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 01</span>
+    <h2 class="unit-title">Introduction to Artificial Intelligence</h2>
+  </div>
+
+  <h3>What Is Intelligence?</h3>
+  <p>Intelligence is <em>"the ability to learn and understand, to solve problems and to make decisions."</em> When we ask whether a machine can be intelligent, we are essentially asking whether it can exhibit this ability.</p>
+
+  <div class="def-box">
+    <div class="label">Definition — Artificial Intelligence</div>
+    <p>AI is the science of making machines do things that would require intelligence if done by humans. — Margaret Boden (1977)</p>
+  </div>
+
+  <h3>The Turing Test</h3>
+  <p>Alan Turing (1950) proposed the <strong>imitation game</strong> to sidestep philosophical debate. Instead of asking "Can machines think?", ask: <em>"Can a machine pass a behavioural test for intelligence?"</em></p>
+
+  <div class="diagram">Phase 1: Interrogator ↔ (Man | Woman)  — guess who is who
+Phase 2: Interrogator ↔ (Computer | Human) — if indistinguishable, machine passes
+
+Key rules:
+• Communication only through text terminals (no voice, no face)
+• Computer may deliberately slow down or make errors
+• Interrogator may ask anything
+• If fooled as often as a human, the computer passes</div>
+
+  <div class="keypoints">
+    <div class="kp-label">Key Points</div>
+    <ul>
+      <li>Modern computers still cannot pass the full Turing Test.</li>
+      <li>The test provides a basis for evaluating narrow AI systems.</li>
+      <li>Human brain ≈ 10<sup>18</sup> bits storage, processes at 10<sup>15</sup> bits/sec.</li>
+    </ul>
+  </div>
+
+  <h3>History of AI — Four Eras</h3>
+
+  <h4>Era 1: Dark Ages & Birth (1943–1956)</h4>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li><strong>McCulloch & Pitts (1943):</strong> First neural network model — binary neuron states.</li>
+    <li><strong>von Neumann:</strong> Encouraged neural computing; ENIAC/EDVAC.</li>
+    <li><strong>Shannon (1950):</strong> Chess has 10<sup>120</sup> possible moves → need heuristics.</li>
+    <li><strong>Dartmouth Workshop (1956):</strong> AI officially named as a science by McCarthy.</li>
+  </ul>
+
+  <h4>Era 2: Great Expectations (1956–Late 1960s)</h4>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li>McCarthy invented LISP; proposed the <em>Advice Taker</em> — the first knowledge-based system.</li>
+    <li>Rosenblatt proved the perceptron convergence theorem.</li>
+    <li>GPS (General Problem Solver) — first system separating problem-solving from data.</li>
+    <li>Zadeh (1965) published <em>"Fuzzy Sets"</em> — largely ignored by the West.</li>
+  </ul>
+
+  <h4>Era 3: Unfulfilled Promises (Late 1960s–Early 1970s)</h4>
+  <p>Weak methods (general search, no domain knowledge) failed on real problems. Funding was cut ("AI Winter").</p>
+
+  <h4>Era 4: Knowledge-Based Systems (1970s–Present)</h4>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li><strong>DENDRAL (1971):</strong> Molecular structure analysis — first real expert system.</li>
+    <li><strong>MYCIN:</strong> Medical diagnosis using backward chaining.</li>
+    <li><strong>PROSPECTOR:</strong> Mineral exploration using Bayesian reasoning.</li>
+    <li>1980s: Neural network revival. 1990s: Fuzzy logic boom in Japan (consumer products).</li>
+  </ul>
+
+  <div class="exam-tip">Know the three generations of AI researchers and the key systems from each era (DENDRAL, MYCIN, PROSPECTOR). These appear in essay questions.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 2 -->
+<section class="unit" id="unit2">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 02</span>
+    <h2 class="unit-title">Knowledge-Based Intelligent Systems</h2>
+  </div>
+
+  <h3>What Is Knowledge?</h3>
+  <p>Knowledge is a theoretical or practical understanding of a subject. It is the sum of what is currently known in a particular domain.</p>
+
+  <table class="compare-table">
+    <tr><th>Type</th><th>Description</th><th>Example</th></tr>
+    <tr><td><strong>Declarative</strong></td><td>Facts and assertions — knowing "what"</td><td>"Water boils at 100°C"</td></tr>
+    <tr><td><strong>Procedural</strong></td><td>Methods and processes — knowing "how"</td><td>"To diagnose fever, check temperature first"</td></tr>
+    <tr><td><strong>Meta-knowledge</strong></td><td>Knowledge about knowledge</td><td>"Expert rules have priority over novice rules"</td></tr>
+    <tr><td><strong>Heuristic</strong></td><td>Rules of thumb from experience</td><td>"If patient has fever AND rash, suspect infection"</td></tr>
+  </table>
+
+  <h3>Expert Systems vs Conventional Programs</h3>
+  <table class="compare-table">
+    <tr><th>Feature</th><th>Expert System</th><th>Conventional Program</th></tr>
+    <tr><td>Knowledge separation</td><td>Separate knowledge base from inference</td><td>Mixed with code</td></tr>
+    <tr><td>Uncertain data</td><td>Handles incomplete/fuzzy data</td><td>Requires exact data</td></tr>
+    <tr><td>Explanation</td><td>Can explain reasoning</td><td>No explanation</td></tr>
+    <tr><td>Updates</td><td>Add/modify rules easily</td><td>Full code change needed</td></tr>
+    <tr><td>Mistakes</td><td>Makes mistakes like humans with incomplete data</td><td>No solution or wrong answer</td></tr>
+  </table>
+
+  <div class="exam-tip">This comparison table is very exam-important — remember it clearly.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 3 -->
+<section class="unit" id="unit3">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 03</span>
+    <h2 class="unit-title">Rule-Based Expert Systems</h2>
+  </div>
+
+  <h3>Production Rules</h3>
+  <div class="def-box">
+    <div class="label">Definition — Production Rule</div>
+    <p>A rule of the form: IF [antecedent/condition] THEN [consequent/action]. The most popular knowledge representation technique.</p>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-label">Example Rules</div>
+    IF  the season is autumn AND the sky is cloudy AND the wind is low<br>
+    THEN  forecast is drizzle {cf 1.0}; forecast is rain {cf 0.9}<br><br>
+    IF  patient has fever AND patient has rash<br>
+    THEN infection is likely
+  </div>
+
+  <h3>Five Components of an Expert System</h3>
+  <table class="compare-table">
+    <tr><th>Component</th><th>Function</th></tr>
+    <tr><td><strong>Knowledge Base</strong></td><td>Contains domain rules (IF-THEN)</td></tr>
+    <tr><td><strong>Database (Working Memory)</strong></td><td>Set of facts about the current situation</td></tr>
+    <tr><td><strong>Inference Engine</strong></td><td>Links rules with facts; drives reasoning</td></tr>
+    <tr><td><strong>Explanation Facilities</strong></td><td>Explains HOW a conclusion was reached and WHY data was needed</td></tr>
+    <tr><td><strong>User Interface</strong></td><td>Communication layer between user and system</td></tr>
+  </table>
+
+  <h3>Inference Techniques</h3>
+
+  <h4>Forward Chaining (Data-Driven)</h4>
+  <p>Start from known facts → apply rules → derive new facts → repeat until no more rules fire. Used when <strong>we have data and want to see what can be concluded</strong>.</p>
+
+  <div class="diagram">Known facts: A, B, C, D, E
+
+Rule 3: A → X  ✓ fires  →  add X
+Rule 2: X ∧ B ∧ E → Y  ✓ fires  →  add Y  
+Rule 1: Y ∧ D → Z  ✓ fires  →  add Z
+
+Result: Z is proven. Best for: analysis, interpretation (e.g., DENDRAL)</div>
+
+  <h4>Backward Chaining (Goal-Driven)</h4>
+  <p>Start from a goal (hypothesis) → find rules that conclude it → try to satisfy their conditions → recurse. Used when <strong>we have a specific goal to prove</strong>.</p>
+
+  <div class="diagram">Goal: prove Z
+
+Pass 1: Find Rule 1: Y ∧ D → Z  ← stack it; now need Y and D
+Pass 2: Find Rule 2: X ∧ B ∧ E → Y  ← stack it; now need X, B, E
+Pass 3: Find Rule 3: A → X  ← stack it; need A
+Pass 4: A found in database → fire Rule 3 → X proved
+Pass 5: B, E in database → fire Rule 2 → Y proved
+Pass 6: D in database → fire Rule 1 → Z proved ✓
+
+Best for: diagnosis (e.g., MYCIN)</div>
+
+  <table class="compare-table">
+    <tr><th>Criterion</th><th>Forward Chaining</th><th>Backward Chaining</th></tr>
+    <tr><td>Direction</td><td>Data → Conclusion</td><td>Goal → Data</td></tr>
+    <tr><td>Starting point</td><td>Known facts</td><td>Hypothesis/Goal</td></tr>
+    <tr><td>User input</td><td>No new questions</td><td>May ask user for missing data</td></tr>
+    <tr><td>Best for</td><td>Analysis, monitoring</td><td>Diagnosis, classification</td></tr>
+    <tr><td>Efficiency</td><td>May fire irrelevant rules</td><td>Only fires relevant rules</td></tr>
+  </table>
+
+  <h3>Conflict Resolution</h3>
+  <p>When multiple rules can fire in a cycle, the inference engine must choose one. This is called <strong>conflict resolution</strong>.</p>
+
+  <div class="keypoints">
+    <div class="kp-label">Three Main Strategies</div>
+    <ul>
+      <li><strong>Priority-based:</strong> Fire rule with highest declared priority.</li>
+      <li><strong>Most specific rule:</strong> Fire the rule with the most conditions (longest match). More specific = more information processed.</li>
+      <li><strong>Most recent data:</strong> Fire the rule whose conditions use the most recently added facts (using time tags).</li>
+    </ul>
+  </div>
+
+  <h3>Metaknowledge</h3>
+  <div class="def-box">
+    <div class="label">Definition</div>
+    <p>Metaknowledge = knowledge about knowledge. Metarules control how task-specific rules are used. Example: "Rules from certified experts have higher priority than rules from trainees."</p>
+  </div>
+
+  <h3>Advantages & Disadvantages</h3>
+  <table class="compare-table">
+    <tr><th>Advantages ✓</th><th>Disadvantages ✗</th></tr>
+    <tr><td>Natural knowledge representation</td><td>Opaque relations between large sets of rules</td></tr>
+    <tr><td>Uniform IF-THEN structure</td><td>Exhaustive search is inefficient at scale</td></tr>
+    <tr><td>Separation of knowledge from processing</td><td>Cannot learn from experience</td></tr>
+    <tr><td>Handles incomplete and uncertain data</td><td>Knowledge acquisition is slow and expensive</td></tr>
+  </table>
+
+  <div class="exam-tip">The MEDIA ADVISOR example from the book is a great way to understand how a real rule-based system works. Forward chaining fires all rules; backward chaining only fires what's needed to prove the goal.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 4 -->
+<section class="unit" id="unit4">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 04</span>
+    <h2 class="unit-title">Uncertainty Management</h2>
+  </div>
+
+  <h3>Sources of Uncertainty</h3>
+  <div class="keypoints">
+    <div class="kp-label">4 Main Sources (Bonissone & Tong, 1985)</div>
+    <ul>
+      <li><strong>Weak implications:</strong> Vague associations between conditions and conclusions.</li>
+      <li><strong>Imprecise language:</strong> Words like "often," "rarely" have no exact numeric meaning.</li>
+      <li><strong>Unknown data:</strong> Missing or incomplete information.</li>
+      <li><strong>Conflicting experts:</strong> Different experts give contradictory rules.</li>
+    </ul>
+  </div>
+
+  <h3>Bayesian Reasoning</h3>
+  <p>Based on conditional probability. Given evidence E, what is the probability hypothesis H is true?</p>
+
+  <div class="rule-box">
+    <div class="rule-label">Bayes' Rule</div>
+    P(H|E) = P(E|H) × P(H)  /  [ P(E|H) × P(H) + P(E|¬H) × P(¬H) ]
+    
+    Where:
+    P(H)   = prior probability of H (before seeing evidence)
+    P(E|H) = probability of observing E if H is true
+    P(H|E) = posterior probability of H after observing E
+  </div>
+
+  <h4>How Bayesian Expert Systems Work</h4>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li>Expert provides prior probabilities for all hypotheses.</li>
+    <li>Expert provides conditional probabilities P(E|H) for each evidence-hypothesis pair.</li>
+    <li>User inputs observed evidence.</li>
+    <li>System calculates posterior probabilities and ranks hypotheses.</li>
+    <li>As more evidence is observed, probabilities update (accumulated evidence).</li>
+  </ul>
+
+  <div class="important">
+    <strong>Bias of Bayesian method:</strong> Assumes conditional independence of evidence — rarely true in real life. Requires large numbers of probabilities from experts. This is why the CF approach was developed.
+  </div>
+
+  <h3>Certainty Factors (CF) Theory</h3>
+  <p>Developed for MYCIN as a simpler alternative to full Bayesian reasoning. CF represents a degree of belief in a hypothesis.</p>
+
+  <div class="rule-box">
+    <div class="rule-label">CF Formula</div>
+    CF(H, E) = MB(H, E) − MD(H, E)
+    
+    MB = Measure of Belief (how much evidence supports H)
+    MD = Measure of Disbelief (how much evidence contradicts H)
+    CF range: −1 (definitely false) to +1 (definitely true)
+    
+    Example Rule:
+    IF fever AND stiff_neck THEN meningitis {cf 0.8}
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Feature</th><th>Bayesian Reasoning</th><th>Certainty Factors</th></tr>
+    <tr><td>Foundation</td><td>Classical probability theory</td><td>Ad-hoc but practical</td></tr>
+    <tr><td>Requirements</td><td>Many prior probabilities needed</td><td>Just CF values per rule</td></tr>
+    <tr><td>Independence assumption</td><td>Required</td><td>Not required</td></tr>
+    <tr><td>Expert burden</td><td>Very high</td><td>Lower</td></tr>
+    <tr><td>Best for</td><td>When good probability data exists</td><td>When expert intuition guides design</td></tr>
+  </table>
+
+  <div class="exam-tip">Be able to apply Bayesian update formula to a simple numerical example — it's a common exam question. Also understand the difference between prior and posterior probability.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 5 -->
+<section class="unit" id="unit5">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 05</span>
+    <h2 class="unit-title">Frame-Based Systems</h2>
+  </div>
+
+  <h3>What Is a Frame?</h3>
+  <div class="def-box">
+    <div class="label">Definition — Frame (Minsky, 1975)</div>
+    <p>A data structure with typical knowledge about a particular object or concept. Think of it as a "record" or "object" that groups related attributes together.</p>
+  </div>
+
+  <div class="diagram">Frame: PERSON
+├── Name:    [value]
+├── Age:     [value]  
+├── Height:  [numeric range: 0–250 cm]
+├── Weight:  [numeric]
+└── Job:     [value or procedure]
+
+Frame: COMPUTER (class)
+├── Processor:    [default: Intel i5]
+├── RAM:          [numeric, GB]
+├── Price:        [range: $750–$1500]
+├── WHEN_NEEDED:  [calculate warranty expiry]
+└── WHEN_CHANGED: [update stock count]</div>
+
+  <h3>Key Concepts</h3>
+
+  <h4>Class vs. Instance</h4>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li><strong>Class-frame:</strong> Describes a group of similar objects (e.g., "Computer").</li>
+    <li><strong>Instance-frame:</strong> A specific object (e.g., "My IBM ThinkPad X1").</li>
+  </ul>
+
+  <h4>Inheritance</h4>
+  <p>Instances automatically inherit all attributes and default values from their class. This supports <strong>code reuse</strong> and reflects the real-world concept of "is-a" relationships.</p>
+
+  <div class="keypoints">
+    <div class="kp-label">Three Types of Relationships</div>
+    <ul>
+      <li><strong>Generalisation (is-a):</strong> Car is-a Vehicle. Subclass inherits from superclass.</li>
+      <li><strong>Aggregation (part-of):</strong> Engine is-part-of Car.</li>
+      <li><strong>Association:</strong> Mr. Black owns Car, House, Computer (semantic link).</li>
+    </ul>
+  </div>
+
+  <h4>Facets</h4>
+  <p>Extended information about a slot, including: <strong>value facets</strong> (default/initial), <strong>prompt facets</strong> (ask user), and <strong>inference facets</strong> (when to stop inference).</p>
+
+  <h4>Methods and Demons</h4>
+  <table class="compare-table">
+    <tr><th>Type</th><th>When it fires</th><th>Best for</th></tr>
+    <tr><td><strong>WHEN CHANGED</strong></td><td>When an attribute's value changes</td><td>Triggering actions, updating linked data</td></tr>
+    <tr><td><strong>WHEN NEEDED</strong></td><td>When an attribute's value is needed but not set</td><td>Lazy evaluation, default fallback</td></tr>
+    <tr><td><strong>Demon</strong></td><td>Same as methods but limited to IF-THEN</td><td>Simple reactive rules</td></tr>
+  </table>
+
+  <h3>Advantages of Frame Systems</h3>
+  <div class="keypoints">
+    <div class="kp-label">Why use frames?</div>
+    <ul>
+      <li>Natural grouping of related knowledge (avoids scattered facts).</li>
+      <li>Inheritance reduces redundancy.</li>
+      <li>Object-oriented — mirrors real-world entities.</li>
+      <li>Rules and procedures can be attached directly to frames.</li>
+      <li>Faster search: only look in the relevant frame, not the whole knowledge base.</li>
+    </ul>
+  </div>
+
+  <div class="exam-tip">The Buy Smart example (property advisor) shows how a real frame-based system uses demons to filter instances and WHEN CHANGED methods to navigate. Know this example well.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 6 -->
+<section class="unit" id="unit6">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 06</span>
+    <h2 class="unit-title">Fuzzy Logic and Fuzzy Expert Systems</h2>
+  </div>
+
+  <h3>Why Fuzzy Logic?</h3>
+  <p>Classical (Boolean) logic is crisp: something is either true (1) or false (0). But real-world concepts like "tall," "young," "hot," and "fast" are inherently fuzzy — there are no sharp boundaries.</p>
+
+  <div class="def-box">
+    <div class="label">Definition — Fuzzy Set (Zadeh, 1965)</div>
+    <p>A set with fuzzy boundaries. Each element belongs to the set with a degree of membership μ ∈ [0, 1], not just 0 or 1.</p>
+  </div>
+
+  <h3>Membership Functions</h3>
+  <p>A membership function maps a value to its degree of belonging to a fuzzy set.</p>
+
+  <div class="diagram">Universe: Man's Height (cm)
+
+Fuzzy Sets:
+  SHORT:   μ = 1.0 for x ≤ 160; decreases to 0 at x = 180
+  AVERAGE: μ peaks at x = 170; drops off on both sides  
+  TALL:    μ = 0 for x ≤ 170; increases to 1.0 at x = 190+
+
+A man of 175 cm might have:
+  μ(SHORT)   = 0.1
+  μ(AVERAGE) = 0.7
+  μ(TALL)    = 0.4
+→ He is somewhat average AND somewhat tall!</div>
+
+  <h3>Linguistic Variables and Hedges</h3>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li><strong>Linguistic variable:</strong> A variable described in words (e.g., "Speed" with values "Slow", "Medium", "Fast").</li>
+    <li><strong>Hedges:</strong> Modifiers that change the degree of membership.</li>
+  </ul>
+
+  <table class="compare-table">
+    <tr><th>Hedge</th><th>Effect</th><th>Math</th></tr>
+    <tr><td><em>very</em> tall</td><td>Concentration — narrows the set</td><td>μ<sup>2</sup>(x)</td></tr>
+    <tr><td><em>more or less</em> tall</td><td>Dilation — broadens the set</td><td>μ<sup>0.5</sup>(x)</td></tr>
+    <tr><td><em>indeed</em> tall</td><td>Intensification</td><td>Boosts above-0.5, reduces below-0.5</td></tr>
+  </table>
+
+  <h3>Fuzzy Set Operations</h3>
+  <table class="compare-table">
+    <tr><th>Operation</th><th>Classical</th><th>Fuzzy</th></tr>
+    <tr><td>Complement (NOT)</td><td>1 − A</td><td>μ<sub>NOT A</sub>(x) = 1 − μ<sub>A</sub>(x)</td></tr>
+    <tr><td>Intersection (AND)</td><td>A ∩ B</td><td>μ<sub>A∩B</sub>(x) = min(μ<sub>A</sub>(x), μ<sub>B</sub>(x))</td></tr>
+    <tr><td>Union (OR)</td><td>A ∪ B</td><td>μ<sub>A∪B</sub>(x) = max(μ<sub>A</sub>(x), μ<sub>B</sub>(x))</td></tr>
+  </table>
+
+  <h3>Fuzzy Inference Process — 4 Steps</h3>
+
+  <div class="diagram">INPUT: crisp value(s)
+    ↓
+Step 1: FUZZIFICATION
+  Convert crisp inputs to degrees of membership in fuzzy sets.
+  e.g., Speed = 60 km/h → μ(Medium) = 0.6, μ(Fast) = 0.2
+
+Step 2: RULE EVALUATION
+  Apply AND (min) / OR (max) to multi-antecedent rules.
+  Fire each relevant rule and get a firing strength.
+  e.g., IF speed is Medium AND road is Wet THEN brake is Hard
+
+Step 3: AGGREGATION
+  Combine all rule outputs (union of clipped/scaled fuzzy sets)
+  into a single output fuzzy region.
+
+Step 4: DEFUZZIFICATION
+  Convert aggregate fuzzy set → single crisp output number.
+  Most common: Centroid of Gravity (COG) method.
+    ↓
+OUTPUT: crisp value</div>
+
+  <h3>Mamdani vs. Sugeno Methods</h3>
+  <table class="compare-table">
+    <tr><th>Feature</th><th>Mamdani (1975)</th><th>Sugeno (1985)</th></tr>
+    <tr><td>Rule consequent</td><td>Fuzzy set</td><td>Mathematical function or constant (singleton)</td></tr>
+    <tr><td>Defuzzification</td><td>Complex (centroid of 2D shape)</td><td>Simple weighted average</td></tr>
+    <tr><td>Computational load</td><td>Higher</td><td>Lower, faster</td></tr>
+    <tr><td>Best for</td><td>Capturing expert knowledge, human-interpretable</td><td>Control systems, optimization, adaptive systems</td></tr>
+    <tr><td>Output</td><td>Fuzzy set clipped/scaled</td><td>Singleton spike (k = constant)</td></tr>
+  </table>
+
+  <h3>Building a Fuzzy Expert System — 5 Steps</h3>
+  <ol style="padding-left:1.4rem; margin-bottom:.8rem; line-height:2;">
+    <li>Specify the problem and define linguistic variables.</li>
+    <li>Determine fuzzy sets and membership functions.</li>
+    <li>Elicit and construct fuzzy rules.</li>
+    <li>Encode sets, rules and inference in the system.</li>
+    <li>Evaluate and tune the system (most laborious step).</li>
+  </ol>
+
+  <div class="important">
+    <strong>Important tuning tips:</strong> Maintain 25–50% overlap between neighbouring fuzzy sets. Wide sets → rough performance. Tune by adjusting set shapes, adding new rules, or adjusting rule weights.
+  </div>
+
+  <div class="exam-tip">Be able to perform fuzzy inference on a simple example: given inputs, fuzzify them, evaluate 2–3 rules, aggregate, and defuzzify using centroid. This is a classic exam problem.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 7 -->
+<section class="unit" id="unit7">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 07</span>
+    <h2 class="unit-title">Frame-Based Expert Systems (Applied)</h2>
+  </div>
+
+  <p>This unit extends Unit 05 with practical application aspects, covering the integration of frames with rules and the development lifecycle.</p>
+
+  <h3>Frames + Rules Together</h3>
+  <p>In frame-based systems, rules play an auxiliary role. Frames store the main knowledge; rules help evaluate frame attributes dynamically.</p>
+
+  <div class="keypoints">
+    <div class="kp-label">How rules differ in frame-based systems</div>
+    <ul>
+      <li>Rules use <strong>pattern-matching clauses</strong> with variables to find matching instance-frames.</li>
+      <li>The inference engine searches for the goal attribute across all frames.</li>
+      <li>SEARCH ORDER facet determines whether rules or WHEN NEEDED methods fire first.</li>
+    </ul>
+  </div>
+
+  <h3>Development Steps for Frame-Based Systems</h3>
+  <ol style="padding-left:1.4rem; margin-bottom:.8rem; line-height:2.2;">
+    <li>Specify the problem and define scope.</li>
+    <li>Determine classes and their attributes.</li>
+    <li>Define instances (link to databases if needed).</li>
+    <li>Design displays (user interface).</li>
+    <li>Define WHEN CHANGED / WHEN NEEDED methods and demons.</li>
+    <li>Define rules for complex evaluations.</li>
+    <li>Evaluate and expand the system.</li>
+  </ol>
+
+  <div class="exam-tip">Remember: frames are better than rule-only systems when objects have shared structure and hierarchy. They avoid searching the entire knowledge base for every query.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 8 -->
+<section class="unit" id="unit8">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 08</span>
+    <h2 class="unit-title">Artificial Neural Networks</h2>
+  </div>
+
+  <h3>How the Brain Works</h3>
+  <p>The human brain has ~10 billion neurons and 60 trillion synaptic connections. Neural networks process information in parallel, storing knowledge globally across the entire network — not at specific locations.</p>
+
+  <div class="def-box">
+    <div class="label">Key Insight</div>
+    <p>Neural networks learn by strengthening useful connections and weakening useless ones — exactly like the brain's plasticity. This enables <em>learning from experience</em>.</p>
+  </div>
+
+  <h3>The Perceptron (Single Neuron)</h3>
+  <div class="diagram">Inputs: x₁, x₂, ..., xₙ
+Weights: w₁, w₂, ..., wₙ
+
+Net input:    X = Σ(xᵢ × wᵢ) − θ  (θ = threshold)
+
+Activation:   Y = { 1  if X ≥ 0
+                   { 0  if X < 0    (step function)
+
+Learning Rule: wᵢ(new) = wᵢ(old) + α × (desired − actual) × xᵢ
+              (α = learning rate, e.g., 0.1)</div>
+
+  <h3>Multilayer Neural Networks (MLP)</h3>
+
+  <h4>Architecture</h4>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li><strong>Input layer:</strong> Receives external data (no processing).</li>
+    <li><strong>Hidden layer(s):</strong> Extract features, apply transformations.</li>
+    <li><strong>Output layer:</strong> Produces final predictions/classifications.</li>
+  </ul>
+
+  <h4>Backpropagation (Learning Algorithm)</h4>
+  <div class="diagram">FORWARD PASS:
+  Input → Hidden layer(s) → Output
+  Calculate error = Desired output − Actual output
+
+BACKWARD PASS:
+  Propagate error backwards through network
+  Adjust weights using gradient descent:
+  Δwᵢⱼ = α × δⱼ × yᵢ
+  (α=learning rate, δⱼ=error signal, yᵢ=layer i output)
+
+Repeat until error is minimized.</div>
+
+  <h3>Network Architectures</h3>
+  <table class="compare-table">
+    <tr><th>Network Type</th><th>Structure</th><th>Best for</th></tr>
+    <tr><td><strong>Perceptron</strong></td><td>Single layer, step activation</td><td>Linearly separable problems</td></tr>
+    <tr><td><strong>MLP (Backprop)</strong></td><td>Multiple layers, sigmoid/ReLU</td><td>Classification, regression</td></tr>
+    <tr><td><strong>Hopfield</strong></td><td>Recurrent, fully connected</td><td>Associative memory, pattern completion</td></tr>
+    <tr><td><strong>BAM</strong></td><td>Bidirectional recurrent</td><td>Bidirectional associative memory</td></tr>
+    <tr><td><strong>Kohonen (SOM)</strong></td><td>Self-organising, competitive</td><td>Unsupervised clustering, feature maps</td></tr>
+  </table>
+
+  <h3>Hopfield Network</h3>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li>Fully connected recurrent network — each neuron connects to all others.</li>
+    <li>Stores patterns as stable energy states (attractors).</li>
+    <li>Acts like associative memory: present a noisy/partial pattern → retrieves the complete stored pattern.</li>
+    <li>Energy always decreases during recall → guaranteed convergence.</li>
+  </ul>
+
+  <h3>Self-Organising Neural Networks (Kohonen)</h3>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li>Unsupervised learning — no labels needed.</li>
+    <li>Competitive learning: neurons compete, winner (best-matching unit) and its neighbours are updated.</li>
+    <li>Creates a topographic map: similar inputs activate nearby neurons.</li>
+    <li>Useful for clustering, visualisation and data compression.</li>
+  </ul>
+
+  <h3>NN vs Expert Systems</h3>
+  <table class="compare-table">
+    <tr><th>Feature</th><th>Neural Network</th><th>Expert System</th></tr>
+    <tr><td>Learning</td><td>Yes — from data</td><td>No — manual rule entry</td></tr>
+    <tr><td>Explanation</td><td>No — black box</td><td>Yes — rule trace</td></tr>
+    <tr><td>Noise tolerance</td><td>High</td><td>Low (needs exact match)</td></tr>
+    <tr><td>Knowledge representation</td><td>Distributed weights</td><td>Explicit IF-THEN rules</td></tr>
+    <tr><td>Knowledge acquisition</td><td>Automatic from training data</td><td>Expensive expert interviews</td></tr>
+  </table>
+
+  <div class="exam-tip">Backpropagation algorithm steps are very commonly tested. Know: forward pass → error calculation → backward pass → weight update. Also know why we need hidden layers (XOR problem cannot be solved by single-layer perceptron).</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 9 -->
+<section class="unit" id="unit9">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 09</span>
+    <h2 class="unit-title">Evolutionary Computing</h2>
+  </div>
+
+  <h3>The Biological Analogy</h3>
+  <p>Evolution works through: reproduction, mutation, recombination (crossover), and natural selection of the fittest. Genetic algorithms simulate this to search for optimal solutions.</p>
+
+  <h3>Genetic Algorithms (GA)</h3>
+  <div class="def-box">
+    <div class="label">Definition — Genetic Algorithm (Holland, 1970s)</div>
+    <p>A stochastic search algorithm based on biological evolution. Represents solutions as binary "chromosomes" and evolves populations toward optimal solutions through selection, crossover and mutation.</p>
+  </div>
+
+  <h4>GA Steps (10-Step Process)</h4>
+  <div class="diagram">Step 1:  Encode problem as fixed-length binary chromosome.
+         Choose population size N, crossover prob pc, mutation prob pm.
+Step 2:  Define fitness function f(chromosome).
+Step 3:  Generate initial random population x₁, x₂, ..., xN
+Step 4:  Calculate fitness: f(x₁), f(x₂), ..., f(xN)
+Step 5:  Select parent chromosomes (probability ∝ fitness).
+Step 6:  Apply crossover and mutation to create offspring.
+Step 7:  Place offspring in new population.
+Step 8:  Repeat Steps 5–7 until new population = N.
+Step 9:  Replace old population with new population.
+Step 10: Repeat from Step 4 until termination criterion met.</div>
+
+  <h4>Genetic Operators</h4>
+  <table class="compare-table">
+    <tr><th>Operator</th><th>Description</th><th>Typical Rate</th></tr>
+    <tr><td><strong>Selection</strong></td><td>Roulette wheel — fitter chromosomes more likely chosen</td><td>—</td></tr>
+    <tr><td><strong>Crossover</strong></td><td>Two parents "break" at random point; swap tails to create offspring</td><td>pc ≈ 0.7</td></tr>
+    <tr><td><strong>Mutation</strong></td><td>Randomly flip a bit in a chromosome (prevents local optima)</td><td>pm ≈ 0.001</td></tr>
+  </table>
+
+  <div class="diagram">Crossover Example:
+Parent 1: 1 1 0 0 | 1 0 1 0     →  Child 1: 1 1 0 0 1 1 1 1
+Parent 2: 0 1 0 1 | 1 1 1 1     →  Child 2: 0 1 0 1 1 0 1 0
+                 ↑ crossover point
+
+Mutation Example:
+Original:  1 1 [0] 0 1 0 1 0
+Mutated:   1 1 [1] 0 1 0 1 0  (bit 3 flipped)</div>
+
+  <h3>Schema Theorem (Why GAs Work)</h3>
+  <p>A <strong>schema</strong> is a template like <code>1 * * 0</code> (wildcards = *). Short, high-fitness schemata grow exponentially across generations. This is the theoretical foundation of GAs.</p>
+
+  <h3>Evolution Strategies</h3>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li>Developed by Rechenberg & Schwefel (1963) for engineering optimisation.</li>
+    <li>Uses <strong>only mutation</strong> (no crossover) with Gaussian (normally distributed) perturbations.</li>
+    <li>Works directly on real numbers — no binary encoding needed.</li>
+    <li>Better than GAs for continuous parameter optimisation.</li>
+  </ul>
+
+  <h3>Genetic Programming</h3>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li>Extension of GAs by John Koza (1990s).</li>
+    <li>Evolves <strong>computer programs</strong> (LISP S-expressions), not just bit strings.</li>
+    <li>Programs are represented as trees; crossover swaps subtrees; mutation changes nodes.</li>
+    <li>Self-modifying code: "evolve the solution, not just the parameters."</li>
+  </ul>
+
+  <table class="compare-table">
+    <tr><th>Method</th><th>Representation</th><th>Operators</th><th>Best for</th></tr>
+    <tr><td>Genetic Algorithm</td><td>Fixed-length binary string</td><td>Selection, Crossover, Mutation</td><td>Discrete optimization</td></tr>
+    <tr><td>Evolution Strategy</td><td>Real-valued vector</td><td>Mutation only (Gaussian)</td><td>Continuous optimization</td></tr>
+    <tr><td>Genetic Programming</td><td>Variable-length program tree</td><td>Crossover, Mutation, Cloning</td><td>Program synthesis, symbolic regression</td></tr>
+  </table>
+
+  <div class="exam-tip">Be able to trace through 1–2 generations of a simple GA example manually — selection (roulette wheel), crossover, and mutation. Also know the difference between crossover and mutation purposes.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 10 -->
+<section class="unit" id="unit10">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 10</span>
+    <h2 class="unit-title">Hybrid Intelligent Systems</h2>
+  </div>
+
+  <h3>Why Hybrid Systems?</h3>
+  <p>No single AI technique is perfect. Each has strengths and weaknesses. Combining them creates systems that are more powerful than the sum of their parts.</p>
+
+  <div class="def-box">
+    <div class="label">Soft Computing (Zadeh, 1991)</div>
+    <p>A collection of methodologies (fuzzy logic, neural networks, evolutionary computation) that collectively provide a framework for reasoning in uncertain and imprecise environments — mirroring human cognition.</p>
+  </div>
+
+  <table class="compare-table">
+    <tr><th>Technology</th><th>Strength</th><th>Weakness</th></tr>
+    <tr><td>Expert Systems</td><td>Knowledge representation, explanation</td><td>No learning, rigid, expensive to build</td></tr>
+    <tr><td>Fuzzy Systems</td><td>Handles imprecision, linguistic reasoning</td><td>Cannot learn or adapt automatically</td></tr>
+    <tr><td>Neural Networks</td><td>Learning, generalisation, noise tolerance</td><td>Black box, needs large training data</td></tr>
+    <tr><td>Genetic Algorithms</td><td>Global optimization, adaptability</td><td>Computationally expensive, slow</td></tr>
+  </table>
+
+  <h3>Neural Expert Systems</h3>
+  <p>A hybrid combining <strong>neural networks</strong> (as knowledge base) with <strong>rule-based inference</strong> (as explanation layer).</p>
+
+  <div class="keypoints">
+    <div class="kp-label">Key Features</div>
+    <ul>
+      <li>Neural network is trained on data → weights encode knowledge automatically.</li>
+      <li>Rule extraction unit converts weights to IF-THEN rules (explainability).</li>
+      <li>Approximate reasoning: can handle noisy/incomplete inputs (no exact match needed).</li>
+      <li>Rule extraction uses the heuristic: "Infer if known weighted input > sum of |unknown weights|."</li>
+    </ul>
+  </div>
+
+  <h3>Neuro-Fuzzy Systems</h3>
+  <p>A neural network that is <strong>functionally equivalent to a fuzzy inference model</strong>. The neural structure provides learning; the fuzzy rules provide transparency.</p>
+
+  <div class="diagram">Neuro-Fuzzy Architecture (5 Layers):
+Layer 1: Input layer — passes crisp values
+Layer 2: Fuzzification — membership functions as activation functions
+         (parameters a, b act like weights → can be trained!)
+Layer 3: Fuzzy rules — product operation for AND
+         (weights = rule certainty factors)
+Layer 4: Output membership — probabilistic OR for union
+Layer 5: Defuzzification — crisp output via weighted average</div>
+
+  <h3>ANFIS — Adaptive Neuro-Fuzzy Inference System</h3>
+  <ul style="padding-left:1.4rem; margin-bottom:.8rem;">
+    <li>Combines neuro-fuzzy with the <strong>Sugeno</strong> fuzzy model.</li>
+    <li>Uses hybrid learning: backpropagation for premise parameters + least squares for consequent parameters.</li>
+    <li>Computationally efficient and highly accurate.</li>
+    <li>Used widely in control, forecasting, and signal processing.</li>
+  </ul>
+
+  <h3>Evolutionary Neural Networks</h3>
+  <p>Genetic algorithms are used to optimise the <strong>architecture and weights</strong> of neural networks — removing the need for manual design and backprop.</p>
+
+  <h3>Fuzzy Evolutionary Systems</h3>
+  <p>Evolutionary algorithms optimise fuzzy system parameters (membership function shapes, rule weights).</p>
+
+  <div class="exam-tip">The key question is: "Which components combine to make which hybrid, and what does each contribute?" Neuro-fuzzy = NN + Fuzzy. ANFIS = NN + Sugeno Fuzzy. Neural Expert = NN + Rule-Based. Evolutionary NN = GA + NN.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ UNIT 11 -->
+<section class="unit" id="unit11">
+  <div class="unit-header">
+    <span class="unit-num">UNIT 11</span>
+    <h2 class="unit-title">Knowledge Engineering</h2>
+  </div>
+
+  <h3>What Is Knowledge Engineering?</h3>
+  <div class="def-box">
+    <div class="label">Definition</div>
+    <p>Knowledge engineering is the process of building knowledge-based systems. The knowledge engineer is responsible for acquiring knowledge from domain experts, representing it formally, and building and testing the system.</p>
+  </div>
+
+  <h3>Six Phases of the Knowledge Engineering Process</h3>
+  <table class="compare-table">
+    <tr><th>#</th><th>Phase</th><th>Activity</th></tr>
+    <tr><td>1</td><td><strong>Problem Assessment</strong></td><td>Is this an appropriate problem for an intelligent system?</td></tr>
+    <tr><td>2</td><td><strong>Data and Knowledge Acquisition</strong></td><td>Interview experts, review documents, observe task performance.</td></tr>
+    <tr><td>3</td><td><strong>Knowledge Base Development</strong></td><td>Encode rules, frames, or network weights.</td></tr>
+    <tr><td>4</td><td><strong>System Prototyping</strong></td><td>Build and test a working prototype.</td></tr>
+    <tr><td>5</td><td><strong>System Evaluation</strong></td><td>Validate with real test cases; compare with human expert.</td></tr>
+    <tr><td>6</td><td><strong>System Integration and Maintenance</strong></td><td>Deploy; update as knowledge evolves.</td></tr>
+  </table>
+
+  <h3>Choosing the Right Tool</h3>
+  <table class="compare-table">
+    <tr><th>Problem type</th><th>Best tool</th><th>Why</th></tr>
+    <tr><td>Rules and logic available from experts</td><td>Rule-based Expert System</td><td>Direct encoding of expertise</td></tr>
+    <tr><td>Vague, imprecise, linguistic knowledge</td><td>Fuzzy Expert System</td><td>Handles imprecision natively</td></tr>
+    <tr><td>Large numerical dataset, pattern recognition</td><td>Neural Network</td><td>Learns from data, generalises</td></tr>
+    <tr><td>Optimisation, scheduling, search</td><td>Genetic Algorithm</td><td>Heuristic global search</td></tr>
+    <tr><td>Need both learning AND explanation</td><td>Hybrid (Neuro-Fuzzy, Neural Expert)</td><td>Best of both worlds</td></tr>
+  </table>
+
+  <h3>Data Mining and Knowledge Discovery</h3>
+  <p>Extracting useful patterns from large datasets. Techniques include decision trees (ID3, C4.5), neural network classifiers, and association rule mining. Decision trees are particularly human-readable and create IF-THEN rules automatically.</p>
+
+  <div class="keypoints">
+    <div class="kp-label">Key Knowledge Engineering Lessons</div>
+    <ul>
+      <li>The most critical phase is problem assessment — not every problem needs an intelligent system.</li>
+      <li>Knowledge acquisition is the bottleneck — experts are hard to interview and may contradict each other.</li>
+      <li>An expert system is validated by comparing it to human experts in test consultations.</li>
+      <li>Hybrid systems are now the norm for real applications — no single technique solves everything.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════════════════ YOUTUBE RECOMMENDATIONS -->
+<section class="youtube-section">
+  <h2>🎬 YouTube Learning Guide</h2>
+  <p class="yt-intro">These topics are complex enough that watching a visual explanation will make the difference between understanding and memorising. Here's what I recommend watching on YouTube, ordered by priority:</p>
+
+  <div class="yt-card">
+    <div class="topic">Backpropagation Explained Visually <span class="yt-priority priority-high">MUST WATCH</span></div>
+    <div class="why">Search: "3Blue1Brown Neural Networks" (4-part series). The animated visuals of gradient descent and weight updates make this crystal clear. Nothing in a textbook compares.</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">Fuzzy Logic and Fuzzy Inference System <span class="yt-priority priority-high">MUST WATCH</span></div>
+    <div class="why">Search: "Fuzzy Logic Tutorial" (by NPTEL or Computerphile). See a live example of fuzzification → rule evaluation → defuzzification with graphs. Very hard to understand without visuals.</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">Genetic Algorithms from Scratch <span class="yt-priority priority-high">MUST WATCH</span></div>
+    <div class="why">Search: "Genetic Algorithm Explained" or "The Coding Train Genetic Algorithm". Watching selection, crossover and mutation animated on a population makes the Schema Theorem intuitive.</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">Bayesian Reasoning / Bayes' Theorem <span class="yt-priority priority-high">MUST WATCH</span></div>
+    <div class="why">Search: "3Blue1Brown Bayes Theorem" or "Bayes Theorem Simply Explained". The visual proof with area diagrams makes prior/posterior probability finally click.</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">Perceptron Learning Rule <span class="yt-priority priority-med">IMPORTANT</span></div>
+    <div class="why">Search: "Perceptron Learning Algorithm" or "Single Layer Perceptron". See how weights are updated step by step. Great for understanding why deep networks were needed (XOR problem).</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">Self-Organising Maps (Kohonen Network) <span class="yt-priority priority-med">IMPORTANT</span></div>
+    <div class="why">Search: "Self Organizing Map Neural Network". The animations of neurons organizing themselves into clusters as training progresses is fascinating and makes the concept immediate.</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">Expert Systems and Forward/Backward Chaining <span class="yt-priority priority-med">IMPORTANT</span></div>
+    <div class="why">Search: "Forward Chaining vs Backward Chaining AI" or "Expert System inference engine". A worked example with a small knowledge base is much easier to follow than a textbook trace.</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">ANFIS — Adaptive Neuro-Fuzzy Inference System <span class="yt-priority priority-low">SUPPLEMENT</span></div>
+    <div class="why">Search: "ANFIS Tutorial MATLAB". ANFIS is used in real control systems. Watching it in MATLAB helps you see the 5-layer architecture come alive.</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">Hopfield Network — Associative Memory <span class="yt-priority priority-low">SUPPLEMENT</span></div>
+    <div class="why">Search: "Hopfield Network Tutorial". Watching noisy images converge to stored patterns during recall makes the energy landscape concept vivid.</div>
+  </div>
+
+  <div class="yt-card">
+    <div class="topic">Knowledge Representation: Frames and Objects <span class="yt-priority priority-low">SUPPLEMENT</span></div>
+    <div class="why">Search: "Knowledge Representation AI frames" or "Object-Oriented Knowledge Engineering". Good for understanding why frames outperform pure rule-based systems for structured domains.</div>
+  </div>
+</section>
+
+<footer>
+  Study Notes generated from: "Artificial Intelligence: A Guide to Intelligent Systems" by Michael Negnevitsky (2nd Ed) &nbsp;·&nbsp; 
+  All 11 syllabus topics covered &nbsp;·&nbsp; Good luck! 🎓
+</footer>
+
+</body>
+</html>
